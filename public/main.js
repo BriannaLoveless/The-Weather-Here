@@ -11,23 +11,24 @@ if ("geolocation" in navigator) {
       const response = await fetch(api_url);
       const json = await response.json();
       weather = json.weather;
-      air = json.air_quality.results[0].measurements[0];
       document.getElementById("summary").textContent =
         weather.weather[0].description;
       document.getElementById("temperature").textContent = kelToFar(
         weather.main.temp
       ).toFixed(0);
-      document.getElementById("aq_parameter").textContent = air.parameter;
-      document.getElementById("aq_value").textContent = air.value;
-      document.getElementById("aq_units").textContent = air.unit;
-      document.getElementById("aq_date").textContent = air.lastUpdated;
-
+      console.log(json.air_quality.results);
+      if (json.air_quality.results.length > 0){
+        air = json.air_quality?.results[0]?.measurements[0];
+        document.getElementById("aq_parameter").textContent = air?.parameter;
+        document.getElementById("aq_value").textContent = air?.value;
+        document.getElementById("aq_units").textContent = air?.unit;
+        document.getElementById("aq_date").textContent = air?.lastUpdated;
+      } else{
+        document.getElementById("aq_parameter").textContent = "No air quality reading available";
+      }
 
     } catch (error) {
-      console.error(error);
-      air = { value: -1};
-      document.getElementById("aq_parameter").textContent = "No air quality reading available";
-      
+      console.error(error);    
     }
 
     const data = { lat, lon, weather, air };
