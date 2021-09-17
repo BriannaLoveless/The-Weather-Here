@@ -25,6 +25,7 @@ if ("geolocation" in navigator) {
         document.getElementById("aq_date").textContent = air?.lastUpdated;
       } else{
         document.getElementById("aq_parameter").textContent = "No air quality reading available";
+        air = { value: -1};
       }
 
     } catch (error) {
